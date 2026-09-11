@@ -31,7 +31,9 @@ function goDetail() {
         <img class="cover" :src="cover" :alt="blog.title" loading="lazy" />
       </template>
       <template v-else>
-        <div class="cover cover-placeholder">📄</div>
+        <div class="cover cover-placeholder">
+          <el-icon :size="36"><Picture /></el-icon>
+        </div>
       </template>
     </div>
 
@@ -70,7 +72,7 @@ function goDetail() {
 
   .cover-wrap {
     aspect-ratio: 16 / 9;
-    background: #eef0f5;
+    background: var(--cover-bg);
   }
 
   .cover {
@@ -84,8 +86,7 @@ function goDetail() {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
-    color: #c0c4cc;
+    color: var(--text-faint);
   }
 
   .body {
@@ -121,7 +122,7 @@ function goDetail() {
 
     .time {
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-faint);
     }
   }
 }

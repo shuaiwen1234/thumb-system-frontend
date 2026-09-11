@@ -52,13 +52,15 @@ onMounted(fetchList)
 
     <!-- 错误态 -->
     <div v-else-if="error" class="empty-state">
-      <p>😵 加载失败，可能后端未就绪或未登录放行未生效</p>
+      <el-icon :size="40" class="empty-icon"><WarningFilled /></el-icon>
+      <p>加载失败，可能后端未就绪或未登录放行未生效</p>
       <el-button type="primary" @click="fetchList">重试</el-button>
     </div>
 
     <!-- 空态 -->
     <div v-else-if="list.length === 0" class="empty-state">
-      <p>📭 还没有博客，快去发布第一篇吧</p>
+      <el-icon :size="40" class="empty-icon"><Document /></el-icon>
+      <p>还没有博客，快去发布第一篇吧</p>
     </div>
 
     <!-- 列表 -->
@@ -104,6 +106,11 @@ onMounted(fetchList)
   text-align: center;
   padding: 80px 0;
   color: var(--text-sub);
+
+  .empty-icon {
+    color: var(--text-faint);
+    margin-bottom: 8px;
+  }
 
   p {
     margin: 0 0 16px;

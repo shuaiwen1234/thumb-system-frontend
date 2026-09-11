@@ -79,7 +79,8 @@ const paragraphs = () => (blog.value?.content || '').split('\n').filter((p) => p
 
     <!-- 错误态 -->
     <div v-else-if="error || !blog" class="empty-state">
-      <p>😵 博客不存在或加载失败</p>
+      <el-icon :size="40" class="empty-icon"><WarningFilled /></el-icon>
+      <p>博客不存在或加载失败</p>
       <el-button type="primary" @click="router.push('/')">返回列表</el-button>
     </div>
 
@@ -128,6 +129,10 @@ const paragraphs = () => (blog.value?.content || '').split('\n').filter((p) => p
   text-align: center;
   padding: 80px 0;
   color: var(--text-sub);
+  .empty-icon {
+    color: var(--text-faint);
+    margin-bottom: 8px;
+  }
   p {
     margin: 0 0 16px;
   }
@@ -155,7 +160,7 @@ const paragraphs = () => (blog.value?.content || '').split('\n').filter((p) => p
   display: flex;
   align-items: center;
   gap: 16px;
-  color: #9ca3af;
+  color: var(--text-faint);
   font-size: 13px;
   margin-bottom: 16px;
   flex-wrap: wrap;

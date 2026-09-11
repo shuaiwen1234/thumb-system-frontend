@@ -3,11 +3,15 @@
   --brand: #4f46e5;
   --brand-light: #6366f1;
   --danger: #dc2626;
+  --love: #f43f5e; /* 点赞强调色（rose-500，带暖调，非纯红） */
+  --love-bg: #fff1f2; /* 点赞激活底色（rose-50） */
   --text-main: #1f2937;
-  --text-sub: #6b7280;
+  --text-sub: #64748b; /* slate-500，带冷调的次级灰 */
+  --text-faint: #94a3b8; /* slate-400，最弱辅助文字 */
   --border: #e5e7eb;
   --bg: #f5f6fa;
   --card-bg: #ffffff;
+  --cover-bg: #eef0f5; /* 封面占位底色（带微蓝调，非纯灰） */
 }
 
 * {

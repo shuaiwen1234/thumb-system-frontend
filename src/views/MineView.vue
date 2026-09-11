@@ -60,12 +60,14 @@ onMounted(fetchList)
     </div>
 
     <div v-else-if="error" class="empty-state">
-      <p>😵 加载失败，后端「我的列表」接口可能未就绪</p>
+      <el-icon :size="40" class="empty-icon"><WarningFilled /></el-icon>
+      <p>加载失败，后端「我的列表」接口可能未就绪</p>
       <el-button type="primary" @click="fetchList">重试</el-button>
     </div>
 
     <div v-else-if="list.length === 0" class="empty-state">
-      <p>📭 你还没有发布过博客</p>
+      <el-icon :size="40" class="empty-icon"><Document /></el-icon>
+      <p>你还没有发布过博客</p>
       <el-button type="primary" @click="router.push('/publish')">去发布</el-button>
     </div>
 
@@ -76,7 +78,9 @@ onMounted(fetchList)
             <img class="mine-cover" :src="blog.coverImg" :alt="blog.title" />
           </template>
           <template v-else>
-            <div class="mine-cover placeholder">📄</div>
+            <div class="mine-cover placeholder">
+              <el-icon :size="22"><Picture /></el-icon>
+            </div>
           </template>
           <div class="mine-body">
             <h3 class="mine-title">{{ blog.title }}</h3>
@@ -113,6 +117,10 @@ onMounted(fetchList)
   text-align: center;
   padding: 80px 0;
   color: var(--text-sub);
+  .empty-icon {
+    color: var(--text-faint);
+    margin-bottom: 8px;
+  }
   p {
     margin: 0 0 16px;
   }
@@ -153,7 +161,8 @@ onMounted(fetchList)
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    background: #eef0f5;
+    background: var(--cover-bg);
+    color: var(--text-faint);
   }
 
   .mine-body {
@@ -168,7 +177,7 @@ onMounted(fetchList)
     }
     .mine-time {
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-faint);
     }
   }
 

@@ -40,7 +40,11 @@ async function handleLogin() {
   <div class="login-page">
     <div class="login-card">
       <div class="logo">
-        <span class="mark">👍</span>
+        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"
+          />
+        </svg>
         <h1>文的点赞系统</h1>
       </div>
       <p class="sub">输入用户 ID 登录（无密码，后端按请求头 user 识别身份）</p>
@@ -100,7 +104,9 @@ async function handleLogin() {
     margin-bottom: 8px;
 
     .mark {
-      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      fill: var(--brand);
     }
     h1 {
       margin: 0;
@@ -116,7 +122,7 @@ async function handleLogin() {
   }
 
   .input-prefix {
-    color: #9ca3af;
+    color: var(--text-faint);
     font-size: 13px;
   }
 
@@ -128,7 +134,7 @@ async function handleLogin() {
   .tip {
     margin-top: 16px;
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--text-faint);
   }
 }
 </style>

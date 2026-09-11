@@ -78,7 +78,16 @@ async function toggle() {
     :disabled="loading"
     @click.stop="toggle"
   >
-    <span class="icon" :class="{ 'bump': displayHasThumb }">{{ displayHasThumb ? '❤️' : '🤍' }}</span>
+    <svg
+      class="icon"
+      :class="{ active: displayHasThumb }"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+      />
+    </svg>
     <span class="count">{{ displayCount }}</span>
   </button>
 </template>
@@ -108,31 +117,29 @@ async function toggle() {
   }
 
   &.active {
-    border-color: #f43f5e;
-    background: #fff1f2;
-    color: #f43f5e;
+    border-color: var(--love);
+    background: var(--love-bg);
+    color: var(--love);
   }
 
   .icon {
-    font-size: 15px;
-    line-height: 1;
-    transition: transform 0.2s ease;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition:
+      fill 0.2s ease,
+      stroke 0.2s ease,
+      transform 0.2s ease;
 
-    &.bump {
-      animation: bump 0.3s ease;
+    // 已点赞：实心填充（用 currentColor 跟随父级 love 色），无 overshoot 回弹
+    &.active {
+      fill: currentColor;
+      transform: scale(1.1);
     }
-  }
-}
-
-@keyframes bump {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.4);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 </style>
