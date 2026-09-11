@@ -1,0 +1,53 @@
+// 全局样式：CSS 变量 + 基础布局
+:root {
+  --brand: #4f46e5;
+  --brand-light: #6366f1;
+  --danger: #dc2626;
+  --text-main: #1f2937;
+  --text-sub: #6b7280;
+  --border: #e5e7eb;
+  --bg: #f5f6fa;
+  --card-bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// 通用页面容器
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+// 品牌色按钮（覆盖 Element Plus 默认蓝）
+.el-button--brand {
+  --el-button-bg-color: var(--brand);
+  --el-button-border-color: var(--brand);
+  --el-button-text-color: #fff;
+  --el-button-hover-bg-color: var(--brand-light);
+  --el-button-hover-border-color: var(--brand-light);
+  --el-button-hover-text-color: #fff;
+  --el-button-active-bg-color: var(--brand);
+  --el-button-active-border-color: var(--brand);
+}
