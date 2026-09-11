@@ -131,14 +131,14 @@ async function toggle() {
     stroke-linecap: round;
     stroke-linejoin: round;
     transition:
-      fill 0.2s ease,
-      stroke 0.2s ease,
-      transform 0.2s ease;
+      fill 0.25s ease,
+      stroke 0.25s ease,
+      transform 0.4s var(--ease-spring);
 
-    // 已点赞：实心填充（用 currentColor 跟随父级 love 色），无 overshoot 回弹
+    // 已点赞：实心填充 + 轻微回弹（点赞是"欢乐"交互，允许 1.12 的 spring，非生硬 overshoot）
     &.active {
       fill: currentColor;
-      transform: scale(1.1);
+      transform: scale(1.12);
     }
   }
 }

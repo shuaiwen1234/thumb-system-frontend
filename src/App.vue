@@ -77,8 +77,11 @@ async function handleLogout() {
 }
 
 .navbar {
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--border);
+  // 毛玻璃材质：偏淡紫的半透明，与雾面背景融合（而非刺眼纯白）
+  background: rgba(250, 250, 255, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.08);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -87,7 +90,7 @@ async function handleLogout() {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 16px;
-    height: 60px;
+    height: 64px;
     display: flex;
     align-items: center;
     gap: 24px;
@@ -100,29 +103,39 @@ async function handleLogout() {
     font-weight: 700;
     font-size: 18px;
     color: var(--brand);
+    letter-spacing: -0.02em;
 
     .logo-mark {
       width: 22px;
       height: 22px;
       fill: var(--brand);
       flex-shrink: 0;
+      transition: transform 0.25s var(--ease-out);
+    }
+
+    &:hover .logo-mark {
+      transform: rotate(-12deg) scale(1.1);
     }
   }
 
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 4px;
     flex: 1;
 
     .nav-item {
       color: var(--text-sub);
       font-size: 14px;
-      padding: 6px 16px;
+      font-weight: 500;
+      padding: 7px 16px;
       border-radius: 999px;
-      transition: all 0.2s ease;
+      transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
       &:hover {
         color: var(--brand);
+        background: var(--brand-soft);
       }
       // 当前路由高亮（Vue Router 默认给命中的 router-link 加 .router-link-exact-active）
       &.router-link-exact-active {

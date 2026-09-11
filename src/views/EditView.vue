@@ -121,15 +121,19 @@ onMounted(loadBlog)
 
   .title {
     margin: 0;
-    font-size: 22px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 }
 
 .edit-form {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 28px;
+  box-shadow: var(--shadow-sm);
+  animation: fade-up 0.5s var(--ease-out) both;
 }
 
 .form-actions {

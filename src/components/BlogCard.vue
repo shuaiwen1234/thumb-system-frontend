@@ -6,9 +6,16 @@ import ThumbButton from './ThumbButton.vue'
 
 const props = defineProps<{
   blog: BlogVO
+  /** 列表中的序号，用于入场 stagger（0 起） */
+  index?: number
 }>()
 
 const router = useRouter()
+
+/** 入场延迟：每个卡片错开 60ms，形成瀑布式出现 */
+const delayStyle = computed(() => ({
+  animationDelay: `${(props.index ?? 0) * 60}ms`,
+}))
 
 /** 摘要：content 前 80 字 */
 const summary = computed(() => {
@@ -25,7 +32,7 @@ function goDetail() {
 </script>
 
 <template>
-  <div class="blog-card" @click="goDetail">
+  <div class="blog-card" :style="delayStyle" @click="goDetail">
     <div class="cover-wrap">
       <template v-if="cover">
         <img class="cover" :src="cover" :alt="blog.title" loading="lazy" />
@@ -58,21 +65,26 @@ function goDetail() {
 .blog-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   cursor: pointer;
+  animation: card-in 0.5s var(--ease-out) both;
+  box-shadow: var(--shadow-sm);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    border-color 0.25s ease;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-lg);
+    border-color: #d9ddeb;
   }
 
   .cover-wrap {
     aspect-ratio: 16 / 9;
     background: var(--cover-bg);
+    overflow: hidden;
   }
 
   .cover {
@@ -80,6 +92,12 @@ function goDetail() {
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  // 封面缓慢 zoom（进入详情前的微妙预告，克制到 6%）
+  &:hover .cover {
+    transform: scale(1.06);
   }
 
   .cover-placeholder {
@@ -90,17 +108,24 @@ function goDetail() {
   }
 
   .body {
-    padding: 14px;
+    padding: 16px;
   }
 
   .title {
     margin: 0 0 8px;
     font-size: 16px;
+    font-weight: 600;
     color: var(--text-main);
+    letter-spacing: -0.01em;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: color 0.2s ease;
+  }
+
+  &:hover .title {
+    color: var(--brand);
   }
 
   .summary {

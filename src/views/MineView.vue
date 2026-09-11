@@ -99,8 +99,10 @@ onMounted(fetchList)
 
 <style scoped lang="scss">
 .page-title {
-  margin: 0 0 20px;
-  font-size: 24px;
+  margin: 0 0 24px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .grid {
@@ -138,9 +140,18 @@ onMounted(fetchList)
   justify-content: space-between;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 12px;
   gap: 16px;
+  transition:
+    box-shadow 0.25s var(--ease-out),
+    border-color 0.25s ease,
+    transform 0.25s var(--ease-out);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    border-color: #d9ddeb;
+  }
 
   .mine-main {
     display: flex;

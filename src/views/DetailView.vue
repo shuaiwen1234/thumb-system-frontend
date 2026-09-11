@@ -140,19 +140,25 @@ const paragraphs = () => (blog.value?.content || '').split('\n').filter((p) => p
 
 .article {
   margin-top: 20px;
+  // 详情页整体淡入（页面级入场）
+  animation: fade-up 0.5s var(--ease-out) both;
 }
 
 .article-cover {
   width: 100%;
-  max-height: 400px;
+  max-height: 420px;
   object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 24px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-md);
 }
 
 .article-title {
   margin: 0 0 16px;
-  font-size: 28px;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
   color: var(--text-main);
 }
 
@@ -162,24 +168,24 @@ const paragraphs = () => (blog.value?.content || '').split('\n').filter((p) => p
   gap: 16px;
   color: var(--text-faint);
   font-size: 13px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
 .author-actions {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   display: flex;
   gap: 8px;
 }
 
 .article-content {
   border-top: 1px solid var(--border);
-  padding-top: 24px;
+  padding-top: 28px;
 
   .paragraph {
-    margin: 0 0 16px;
-    font-size: 15px;
-    line-height: 1.8;
+    margin: 0 0 18px;
+    font-size: 16px;
+    line-height: 1.9;
     color: var(--text-main);
     white-space: pre-wrap;
   }

@@ -66,9 +66,10 @@ onMounted(fetchList)
     <!-- 列表 -->
     <div v-else class="grid">
       <BlogCard
-        v-for="blog in list"
+        v-for="(blog, i) in list"
         :key="blog.id"
         :blog="blog"
+        :index="i"
         @thumb-change="handleThumbChange"
       />
     </div>
@@ -77,8 +78,10 @@ onMounted(fetchList)
 
 <style scoped lang="scss">
 .page-title {
-  margin: 0 0 20px;
-  font-size: 24px;
+  margin: 0 0 24px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--text-main);
 }
 
@@ -90,7 +93,7 @@ onMounted(fetchList)
 
 .skeleton-card {
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   overflow: hidden;
 
   .skeleton-cover {
@@ -98,7 +101,7 @@ onMounted(fetchList)
     aspect-ratio: 16 / 9;
   }
   .skeleton-body {
-    padding: 14px;
+    padding: 16px;
   }
 }
 

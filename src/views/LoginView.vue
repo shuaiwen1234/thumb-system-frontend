@@ -92,9 +92,11 @@ async function handleLogin() {
   max-width: 400px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 40px 32px;
   text-align: center;
+  box-shadow: var(--shadow-md);
+  animation: fade-up 0.5s var(--ease-out) both;
 
   .logo {
     display: flex;
@@ -112,6 +114,7 @@ async function handleLogin() {
       margin: 0;
       font-size: 22px;
       color: var(--brand);
+      letter-spacing: -0.02em;
     }
   }
 
