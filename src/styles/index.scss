@@ -1,40 +1,93 @@
-// 全局样式：CSS 变量 + 基础布局 + 缓动曲线 + 动效基础
+// ============================================================
+// 设计系统地基（Design Tokens + Base + 动效）
+// 方向：暖色编辑风 · editorial，暖米底 + 赤陶暖棕 accent + 番茄红点赞
+// ============================================================
+
 :root {
-  // 品牌色（保留既有靛蓝，微调为更有质感的紫色系）
-  --brand: #4f46e5;
-  --brand-light: #6366f1;
-  --brand-soft: #eef0ff; // 品牌淡底（用于 hover、激活背景）
+  // ---------- 品牌色（暖棕/赤陶，单一 accent） ----------
+  --brand: #c2410c; // 赤陶橙棕（orange-700，温暖不刺眼）
+  --brand-600: #9a3412; // 深赤陶（orange-800）
+  --brand-400: #fb923c; // 浅赤陶（orange-400）
+  --brand-soft: #fff3e8; // 激活/hover 淡底（暖米橘）
+  --brand-softer: #fffaf3;
+
+  // 语义色
   --danger: #dc2626;
-  --love: #f43f5e; // 点赞强调色（rose-500，带暖调）
-  --love-bg: #fff1f2; // 点赞激活底色（rose-50）
+  --danger-soft: #fef2f2;
+  --love: #ef4444; // 点赞强调（番茄红）
+  --love-soft: #fef2f2;
 
-  // 中性色（slate 冷调，非纯灰）
-  --text-main: #1f2937;
-  --text-sub: #64748b;
-  --text-faint: #94a3b8;
+  // ---------- 中性色 scale（暖黄褐/羊皮纸，明显奶油感） ----------
+  --gray-50: #faf5ec; // 页面背景（奶油米白）
+  --gray-100: #f3ebdd; // 次级表面（暖亚麻）
+  --gray-200: #e7d9c3; // 边框（暖沙）
+  --gray-300: #d8c5a8;
+  --gray-400: #a89378; // 弱文字（暖灰褐）
+  --gray-500: #7c6a52; // 次级文字（暖棕）
+  --gray-600: #5f503c;
+  --gray-700: #463a29;
+  --gray-900: #271f10; // 主文字（暖褐黑）
 
-  // 表面 & 边框
-  --bg: #f5f6fa;
-  --card-bg: #ffffff;
-  --border: #e5e7eb;
-  --cover-bg: #eef0f5;
+  // ---------- 语义别名（向后兼容旧引用） ----------
+  --text-main: var(--gray-900);
+  --text-sub: var(--gray-500);
+  --text-faint: var(--gray-400);
+  --bg: var(--gray-50);
+  --card-bg: #fffdf8; // 暖白卡片（带极微黄）
+  --border: var(--gray-200);
+  --cover-bg: var(--gray-100);
 
-  // 阴影（带色调，非纯黑；低透明度柔和阴影）
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.1);
+  // ---------- 阴影（暖褐 tinted，非冷黑） ----------
+  --shadow-xs: 0 1px 2px rgba(70, 52, 26, 0.05);
+  --shadow-sm: 0 1px 3px rgba(70, 52, 26, 0.07), 0 1px 2px rgba(70, 52, 26, 0.05);
+  --shadow-md: 0 4px 14px rgba(70, 52, 26, 0.09);
+  --shadow-lg: 0 12px 32px rgba(70, 52, 26, 0.13);
+  --shadow-xl: 0 24px 48px rgba(70, 52, 26, 0.15);
 
-  // 缓动曲线（Emil design-eng：自定义强缓动，避免默认 ease 的生硬）
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); // 强 ease-out：入场/展开
-  --ease-in-out: cubic-bezier(0.83, 0, 0.17, 1); // 屏幕中移动
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); // 轻微回弹（仅用于点赞等欢乐时刻）
-
-  // 圆角刻度（统一，避免混搭）
+  // ---------- 圆角刻度 ----------
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  // ---------- 间距刻度 ----------
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  // ---------- 缓动曲线 ----------
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // ---------- z-index 刻度 ----------
+  --z-nav: 100;
+  --z-overlay: 1000;
+  --z-modal: 1100;
+  --z-toast: 1200;
+
+  // ============================================================
+  // Element Plus 主题统一到品牌色（替代散落的 .el-button--brand）
+  // ============================================================
+  --el-color-primary: #c2410c;
+  --el-color-primary-dark-2: #9b340a;
+  --el-color-primary-light-3: #d47a55;
+  --el-color-primary-light-5: #e0a085;
+  --el-color-primary-light-7: #ecc6b6;
+  --el-color-primary-light-8: #f2d9ce;
+  --el-color-primary-light-9: #f8ece7;
+  --el-border-radius-base: 10px;
+  --el-font-family: inherit;
 }
 
+// ---------- Reset ----------
 * {
   box-sizing: border-box;
 }
@@ -42,39 +95,41 @@
 html {
   margin: 0;
   padding: 0;
-  background: #eef0f8; // 兜底底色
+  background: var(--gray-50);
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   padding: 0;
-  // 淡紫雾氛围背景：直接写在 body 上（不用伪元素，避免被背景色盖住）
-  background:
-    radial-gradient(
-      1000px 540px at 8% -6%,
-      rgba(99, 102, 241, 0.45),
-      transparent 66%
-    ),
-    radial-gradient(
-      820px 460px at 96% -4%,
-      rgba(168, 85, 247, 0.38),
-      transparent 64%
-    ),
-    radial-gradient(
-      1000px 560px at 50% 112%,
-      rgba(99, 102, 241, 0.22),
-      transparent 60%
-    ),
-    linear-gradient(180deg, #eae9f8 0%, #d7dcf4 100%);
+  // 奶油底 + 三处暖光 + 细网格纹理：营造羊皮纸/编辑部氛围
+  // （alpha 适度提高，暖感明确但不刺眼）
+  background-color: var(--gray-50);
+  background-image:
+    // ① 左上暖赤陶光（主光源）
+    radial-gradient(720px 400px at 12% -6%, rgba(194, 65, 12, 0.14), transparent 68%),
+    // ② 右上暖金光（琥珀，次光源）
+    radial-gradient(640px 360px at 92% 0%, rgba(244, 158, 20, 0.11), transparent 66%),
+    // ③ 底部过渡光（暖米棕，压底）
+    radial-gradient(900px 520px at 50% 112%, rgba(200, 130, 40, 0.10), transparent 70%),
+    // ④ 细网格纹理（暖沙色，增加"羊皮纸"肌理）
+    linear-gradient(rgba(168, 147, 120, 0.20) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 147, 120, 0.20) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    auto,
+    28px 28px,
+    28px 28px;
   background-attachment: fixed;
   color: var(--text-main);
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  // 字体渲染更清晰
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  line-height: 1.6;
 }
 
 #app {
@@ -86,18 +141,41 @@ a {
   color: inherit;
 }
 
-// 通用页面容器
+img {
+  display: block;
+  max-width: 100%;
+}
+
+// 数字统一使用等宽数字（点赞数、时间、计数）
+.tabular-nums,
+time,
+.count {
+  font-variant-numeric: tabular-nums;
+}
+
+// ---------- 通用页面容器 ----------
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 20px;
+  padding: var(--space-8) var(--space-5);
 }
 
-// 通用淡入上移动画（用于页面级入场；配合 Vue <Transition> 或直接套 class）
+// 页面标题（统一视觉层级，替代各页面散落的字号）
+.page-heading {
+  margin: 0 0 var(--space-6);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-main);
+  text-wrap: balance;
+}
+
+// ---------- 动效 keyframes ----------
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -105,7 +183,6 @@ a {
   }
 }
 
-// 列表 stagger 入场：每个卡片依次出现（delay 由内联 style 传入）
 @keyframes card-in {
   from {
     opacity: 0;
@@ -117,29 +194,41 @@ a {
   }
 }
 
-// 品牌色按钮（覆盖 Element Plus 默认蓝）
-.el-button--brand {
-  --el-button-bg-color: var(--brand);
-  --el-button-border-color: var(--brand);
-  --el-button-text-color: #fff;
-  --el-button-hover-bg-color: var(--brand-light);
-  --el-button-hover-border-color: var(--brand-light);
-  --el-button-hover-text-color: #fff;
-  --el-button-active-bg-color: var(--brand);
-  --el-button-active-border-color: var(--brand);
+// 路由切换过渡（配合 App.vue 的 <transition>）
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition:
+    opacity 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out);
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 
-// 全局：按压反馈 —— 所有可点击元素有轻微 scale（Emil 核心手感）
+// ---------- 全局按压反馈 ----------
 .el-button,
 .el-input__wrapper,
 .thumb-btn,
 .blog-card {
+  transition-timing-function: var(--ease-out);
+
   &:active {
     scale: 0.98;
   }
 }
 
-// 减少动态偏好：去掉位移/回弹类动效，保留透明度过渡（无障碍）
+// 可见的键盘焦点环（无障碍，Element Plus 默认 focus 之外的补强）
+:focus-visible {
+  outline: 2px solid var(--brand-400);
+  outline-offset: 2px;
+}
+
+// ---------- 减少动态偏好 ----------
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

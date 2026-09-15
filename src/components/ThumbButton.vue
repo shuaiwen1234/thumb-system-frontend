@@ -6,7 +6,7 @@ import { doThumb, undoThumb } from '@/api/thumb'
 import { useUserStore } from '@/store/user'
 
 /**
- * 点赞按钮（带状态）
+ * 点赞按钮（带状态 + 微动效）
  * - 未登录：点击提示登录并跳转 /login
  * - 已登录：乐观更新 + 失败回滚，1 秒防抖
  */
@@ -25,20 +25,19 @@ const userStore = useUserStore()
 
 const loading = ref(false)
 const lastClick = ref(0)
+// 点赞成功的瞬时脉冲（放大心形），100ms 后回落
+const pulse = ref(false)
 
-// 本地乐观状态（props 为准，内部不另存副本，状态回滚由父组件通过 props 下发）
 const displayCount = computed(() => props.thumbCount)
 const displayHasThumb = computed(() => props.hasThumb)
 
 async function toggle() {
-  // 未登录拦截
   if (!userStore.isLoggedIn) {
     ElMessage.warning('请先登录')
     router.push({ path: '/login', query: { redirect: router.currentRoute.value.fullPath } })
     return
   }
 
-  // 1 秒防抖
   const now = Date.now()
   if (now - lastClick.value < 1000 || loading.value) return
   lastClick.value = now
@@ -49,22 +48,24 @@ async function toggle() {
   const nextCount = displayCount.value + (nextHasThumb ? 1 : -1)
 
   try {
-    // 调真实接口
     if (nextHasThumb) {
       await doThumb(props.blogId)
     } else {
       await undoThumb(props.blogId)
     }
-    // 成功后通知父组件同步（含列表/详情全局状态）
     emit('thumb-change', {
       blogId: props.blogId,
       thumbCount: nextCount,
       hasThumb: nextHasThumb,
     })
+    // 点赞成功脉冲
+    if (nextHasThumb) {
+      pulse.value = true
+      setTimeout(() => (pulse.value = false), 120)
+    }
     ElMessage.success(nextHasThumb ? '点赞成功' : '已取消点赞')
   } catch {
-    // 失败：不改变状态（乐观更新在父组件侧提交，此处直接放弃）
-    ElMessage.error('操作失败，请重试')
+    // 错误提示已由 request.ts 响应拦截器统一处理，这里不再重复弹
   } finally {
     loading.value = false
   }
@@ -74,8 +75,10 @@ async function toggle() {
 <template>
   <button
     class="thumb-btn"
-    :class="{ active: displayHasThumb }"
+    :class="{ active: displayHasThumb, pulse: pulse }"
     :disabled="loading"
+    :aria-pressed="displayHasThumb"
+    :aria-label="displayHasThumb ? '取消点赞' : '点赞'"
     @click.stop="toggle"
   >
     <svg
@@ -96,15 +99,19 @@ async function toggle() {
 .thumb-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   border: 1px solid var(--border);
   background: var(--card-bg);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   padding: 4px 12px;
   cursor: pointer;
   font-size: 13px;
   color: var(--text-sub);
-  transition: all 0.2s ease;
+  transition:
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out);
 
   &:disabled {
     opacity: 0.6;
@@ -112,13 +119,13 @@ async function toggle() {
   }
 
   &:hover:not(:disabled) {
-    border-color: var(--brand);
+    border-color: var(--brand-400);
     color: var(--brand);
   }
 
   &.active {
     border-color: var(--love);
-    background: var(--love-bg);
+    background: var(--love-soft);
     color: var(--love);
   }
 
@@ -131,15 +138,23 @@ async function toggle() {
     stroke-linecap: round;
     stroke-linejoin: round;
     transition:
-      fill 0.25s ease,
-      stroke 0.25s ease,
+      fill 0.25s var(--ease-out),
       transform 0.4s var(--ease-spring);
 
-    // 已点赞：实心填充 + 轻微回弹（点赞是"欢乐"交互，允许 1.12 的 spring，非生硬 overshoot）
     &.active {
       fill: currentColor;
-      transform: scale(1.12);
+      transform: scale(1.1);
     }
+  }
+
+  // 点赞成功脉冲：心形瞬间放大后回落
+  &.pulse .icon {
+    transform: scale(1.35);
+    transition: transform 0.4s var(--ease-spring);
+  }
+
+  .count {
+    font-variant-numeric: tabular-nums;
   }
 }
 </style>

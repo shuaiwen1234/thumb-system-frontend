@@ -39,19 +39,23 @@ async function handleLogin() {
 <template>
   <div class="login-page">
     <div class="login-card">
-      <div class="logo">
-        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"
-          />
-        </svg>
-        <h1>文的点赞系统</h1>
+      <div class="login-brand">
+        <span class="mark">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+        </span>
+        <div class="brand-text">
+          <h1>文的点赞系统</h1>
+          <p>高并发点赞技术实践</p>
+        </div>
       </div>
-      <p class="sub">输入用户 ID 登录（无密码，后端按请求头 user 识别身份）</p>
 
       <el-input
         v-model="userIdInput"
-        placeholder="请输入用户 ID，例如 1"
+        placeholder="输入用户 ID 登录，例如 1"
         size="large"
         clearable
         @keyup.enter="handleLogin"
@@ -68,12 +72,10 @@ async function handleLogin() {
         :loading="loading"
         @click="handleLogin"
       >
-        登 录
+        登录
       </el-button>
 
-      <div class="tip">
-        还没有账号？任意数字 ID 均可尝试登录（用户需已存在于后端）
-      </div>
+      <p class="tip">无密码登录，后端按请求头 user 识别身份（用户需已存在）</p>
     </div>
   </div>
 </template>
@@ -84,7 +86,7 @@ async function handleLogin() {
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 60px);
-  padding: 24px;
+  padding: var(--space-6);
 }
 
 .login-card {
@@ -92,52 +94,73 @@ async function handleLogin() {
   max-width: 400px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 40px 32px;
-  text-align: center;
+  border-radius: var(--radius-xl);
+  padding: var(--space-10) var(--space-8);
   box-shadow: var(--shadow-md);
   animation: fade-up 0.5s var(--ease-out) both;
 
-  .logo {
+  .login-brand {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
 
     .mark {
-      width: 28px;
-      height: 28px;
-      fill: var(--brand);
-    }
-    h1 {
-      margin: 0;
-      font-size: 22px;
-      color: var(--brand);
-      letter-spacing: -0.02em;
-    }
-  }
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      background: var(--brand);
 
-  .sub {
-    margin: 0 0 28px;
-    font-size: 13px;
-    color: var(--text-sub);
+      svg {
+        width: 24px;
+        height: 24px;
+        fill: #fff;
+      }
+    }
+
+    .brand-text {
+      h1 {
+        margin: 0 0 2px;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-main);
+      }
+      p {
+        margin: 0;
+        font-size: 12.5px;
+        color: var(--text-sub);
+      }
+    }
   }
 
   .input-prefix {
     color: var(--text-faint);
     font-size: 13px;
+    font-weight: 600;
   }
 
   .login-btn {
     width: 100%;
-    margin-top: 20px;
+    margin-top: var(--space-5);
   }
 
   .tip {
-    margin-top: 16px;
+    margin: var(--space-4) 0 0;
     font-size: 12px;
     color: var(--text-faint);
+    text-align: center;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 640px) {
+  .login-card {
+    padding: var(--space-8) var(--space-5);
   }
 }
 </style>

@@ -6,6 +6,7 @@ import { getBlogDetail, deleteBlog } from '@/api/blog'
 import type { BlogVO } from '@/types'
 import { useUserStore } from '@/store/user'
 import ThumbButton from '@/components/ThumbButton.vue'
+import EmptyState from '@/components/EmptyState.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -26,7 +27,6 @@ async function fetchDetail() {
     if (res.data && res.data.id !== undefined && res.data.id !== null) {
       blog.value = res.data
     } else {
-      // blogId 为空或博客不存在返回空对象/异常
       error.value = true
     }
   } catch {
@@ -59,7 +59,7 @@ async function handleDelete() {
     ElMessage.success('删除成功')
     router.push('/')
   } catch {
-    // 取消或失败（失败提示由拦截器处理）
+    // 取消或失败
   }
 }
 
@@ -70,31 +70,36 @@ const paragraphs = () => (blog.value?.content || '').split('\n').filter((p) => p
 
 <template>
   <div class="page-container detail-page">
-    <el-button link @click="router.push('/')">← 返回列表</el-button>
+    <el-button link class="back" @click="router.push('/')">
+      <el-icon><ArrowLeft /></el-icon> 返回列表
+    </el-button>
 
     <!-- 加载 -->
     <div v-if="loading" class="detail-loading">
-      <el-skeleton :rows="8" animated />
+      <el-skeleton :rows="10" animated />
     </div>
 
     <!-- 错误态 -->
-    <div v-else-if="error || !blog" class="empty-state">
-      <el-icon :size="40" class="empty-icon"><WarningFilled /></el-icon>
-      <p>博客不存在或加载失败</p>
-      <el-button type="primary" @click="router.push('/')">返回列表</el-button>
-    </div>
+    <EmptyState
+      v-else-if="error || !blog"
+      icon="WarningFilled"
+      title="内容不存在"
+      desc="这篇博客可能已被删除，或加载失败。"
+    >
+      <template #action>
+        <el-button type="primary" @click="router.push('/')">返回列表</el-button>
+      </template>
+    </EmptyState>
 
     <!-- 详情 -->
     <article v-else class="article">
-      <template v-if="blog.coverImg">
-        <img class="article-cover" :src="blog.coverImg" :alt="blog.title" />
-      </template>
+      <img v-if="blog.coverImg" class="article-cover" :src="blog.coverImg" :alt="blog.title" />
 
       <h1 class="article-title">{{ blog.title }}</h1>
 
       <div class="article-meta">
-        <span>{{ blog.createTime?.replace('T', ' ').slice(0, 16) }}</span>
-        <span v-if="blog.userId !== undefined">作者：用户 {{ blog.userId }}</span>
+        <time>{{ blog.createTime?.replace('T', ' ').slice(0, 16) }}</time>
+        <span class="dot">·</span>
         <ThumbButton
           :blog-id="blog.id"
           :thumb-count="blog.thumbCount"
@@ -106,7 +111,7 @@ const paragraphs = () => (blog.value?.content || '').split('\n').filter((p) => p
       <!-- 作者操作 -->
       <div v-if="isAuthor()" class="author-actions">
         <el-button type="primary" size="small" @click="goEdit">编辑</el-button>
-        <el-button type="danger" size="small" @click="handleDelete">删除</el-button>
+        <el-button type="danger" size="small" plain @click="handleDelete">删除</el-button>
       </div>
 
       <div class="article-content">
@@ -118,76 +123,81 @@ const paragraphs = () => (blog.value?.content || '').split('\n').filter((p) => p
 
 <style scoped lang="scss">
 .detail-page {
-  max-width: 800px;
+  max-width: 760px;
+}
+
+.back {
+  margin-bottom: var(--space-4);
+  color: var(--text-sub);
+  font-size: 13px;
 }
 
 .detail-loading {
-  margin-top: 20px;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 80px 0;
-  color: var(--text-sub);
-  .empty-icon {
-    color: var(--text-faint);
-    margin-bottom: 8px;
-  }
-  p {
-    margin: 0 0 16px;
-  }
+  margin-top: var(--space-4);
 }
 
 .article {
-  margin-top: 20px;
-  // 详情页整体淡入（页面级入场）
+  margin-top: var(--space-2);
   animation: fade-up 0.5s var(--ease-out) both;
 }
 
 .article-cover {
   width: 100%;
-  max-height: 420px;
+  max-height: 400px;
   object-fit: cover;
   border-radius: var(--radius-lg);
-  margin-bottom: 28px;
+  margin-bottom: var(--space-8);
   box-shadow: var(--shadow-md);
 }
 
 .article-title {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.25;
   color: var(--text-main);
+  text-wrap: balance;
 }
 
 .article-meta {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-3);
   color: var(--text-faint);
   font-size: 13px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--gray-100);
+
+  .dot {
+    color: var(--gray-300);
+  }
 }
 
 .author-actions {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-6);
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .article-content {
-  border-top: 1px solid var(--border);
-  padding-top: 28px;
-
   .paragraph {
-    margin: 0 0 18px;
+    margin: 0 0 var(--space-4);
     font-size: 16px;
     line-height: 1.9;
-    color: var(--text-main);
+    color: var(--gray-700);
     white-space: pre-wrap;
+    text-wrap: pretty;
+  }
+}
+
+@media (max-width: 640px) {
+  .article-title {
+    font-size: 26px !important;
+  }
+  .article-content .paragraph {
+    font-size: 15px;
   }
 }
 </style>

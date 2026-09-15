@@ -25,7 +25,6 @@ async function loadBlog() {
       router.push('/')
       return
     }
-    // 权限校验：非作者本人，跳回详情页
     if (res.data.userId !== undefined && res.data.userId !== userStore.userId) {
       noPermission.value = true
       ElMessage.error('无权限编辑该博客')
@@ -70,75 +69,113 @@ onMounted(loadBlog)
 </script>
 
 <template>
-  <div class="page-container edit-page">
-    <!-- 无权限时不渲染表单 -->
+  <div class="page-container editor-page">
     <template v-if="!noPermission">
-      <div class="edit-head">
-        <el-button link @click="router.push(`/blog/${route.params.id}`)">← 返回详情</el-button>
-        <h2 class="title">编辑博客</h2>
+      <div class="editor-head">
+        <el-button link class="back" @click="router.push(`/blog/${route.params.id}`)">
+          <el-icon><ArrowLeft /></el-icon> 返回详情
+        </el-button>
+        <h1 class="page-heading">编辑博客</h1>
       </div>
 
-      <el-form v-if="!loading" label-position="top" class="edit-form">
-        <el-form-item label="标题（必填）">
-          <el-input v-model="title" placeholder="请输入博客标题" maxlength="512" show-word-limit />
-        </el-form-item>
+      <div v-if="!loading" class="editor-form">
+        <el-form label-position="top">
+          <el-form-item label="标题">
+            <el-input
+              v-model="title"
+              placeholder="一句话说清这篇写了什么"
+              maxlength="512"
+              show-word-limit
+              size="large"
+            />
+          </el-form-item>
 
-        <el-form-item label="封面图 URL（选填）">
-          <el-input v-model="coverImg" placeholder="https://.../cover.png" maxlength="1024" />
-        </el-form-item>
+          <el-form-item label="封面图 URL（选填）">
+            <el-input v-model="coverImg" placeholder="https://.../cover.png" maxlength="1024" />
+          </el-form-item>
 
-        <el-form-item label="正文（必填）">
-          <el-input
-            v-model="content"
-            type="textarea"
-            :rows="10"
-            placeholder="请输入正文内容"
-            show-word-limit
-          />
-        </el-form-item>
+          <div v-if="coverImg" class="cover-preview">
+            <img :src="coverImg" alt="封面预览" />
+          </div>
+
+          <el-form-item label="正文">
+            <el-input
+              v-model="content"
+              type="textarea"
+              :rows="10"
+              placeholder="支持换行分段"
+              show-word-limit
+            />
+          </el-form-item>
+        </el-form>
 
         <div class="form-actions">
           <el-button @click="router.push(`/blog/${route.params.id}`)">取消</el-button>
           <el-button type="primary" @click="handleSubmit">保存修改</el-button>
         </div>
-      </el-form>
+      </div>
 
-      <el-skeleton v-else :rows="8" animated />
+      <el-skeleton v-else :rows="10" animated class="edit-loading" />
     </template>
   </div>
 </template>
 
 <style scoped lang="scss">
-.edit-page {
+.editor-page {
   max-width: 720px;
 }
 
-.edit-head {
+.editor-head {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
 
-  .title {
+  .back {
+    color: var(--text-sub);
+    font-size: 13px;
+    margin-bottom: auto;
+    margin-top: 6px;
+  }
+  .page-heading {
     margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
   }
 }
 
-.edit-form {
+.editor-form {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px;
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
   box-shadow: var(--shadow-sm);
   animation: fade-up 0.5s var(--ease-out) both;
+}
+
+.cover-preview {
+  margin-bottom: var(--space-4);
+
+  img {
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+  }
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.edit-loading {
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .editor-form {
+    padding: var(--space-5);
+  }
 }
 </style>
